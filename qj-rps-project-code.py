@@ -12,7 +12,7 @@ in this game"""
 
 class Player:
     def move(self):
-        return 'void'
+        return 'rock'
 
     def beats(self, one, two):
         return ((one == 'rock' and two == 'scissors') or
@@ -42,11 +42,7 @@ class HumanPlayer(Player):
             if human_move in moves:
                 return human_move
             if human_move == 'quit':
-                return game.play_game()
-            #if human_move == 'quit':
-            #    return 'quit'
-
-
+                return game.end_game()
 
     def learn(self, my_move, their_move):
         pass
@@ -88,12 +84,12 @@ class Game:
             self.count2 += 1
         else:
             print(f"** IT'S A TIE !! **")
-        print(f"Score: Player One {self.count1}, Player Two {self.count2}\n")
+        print(f"Score: Player 1 = {self.count1}, Player 2 = {self.count2}\n")
         self.p1.learn(move1, move2)
         self.p2.learn(move2, move1)
 
     def play_game(self):
-        print(f"\nGame start!\n")
+        print(f"\nROCK-PAPER-SCISSORS - Game start!\n")
         self.count1 = 0
         self.count2 = 0
         round = 0
@@ -101,15 +97,21 @@ class Game:
             round += 1
             print(f"Round {round}:")
             self.play_round()
-        print("Game over!")
-        print(f"Final Score: Player One {self.count1}, Player Two {self.count2}\n")
+
+    def end_game(self):
+        print(f"\nGame over!")
+        print(f"Final Score: Player 1 = {self.count1}, Player 2 = {self.count2}\n")
         if self.count1 > self.count2:
-            print("The winner of the game was PLAYER 1 - Congratulations !!")
+            print(f"The winner of the game was PLAYER 1 - Congratulations !!\n\n")
         elif self.count2 > self.count1:
-            print("The winner of the game was PLAYER 2 - Congratulations !!")
+            print(f"The winner of the game was PLAYER 2 - Congratulations !!\n\n")
         else:
-            print("The game was tied - Time for a re-match :)")
+            if self.count1 ==0 and self.count2 == 0:
+                print(f"The game was void as nobody won a round :( - please try again.\n\n")
+            else:
+                print(f"The game was tied - Time for a re-match :)\n\n")
         print()
+        return game.play_game()
 
 if __name__ == '__main__':
     game = Game(CyclePlayer(), HumanPlayer())
