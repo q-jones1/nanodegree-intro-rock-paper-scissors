@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# Date: 05-01-19
+# This code uses the native 'random' module + free 'colored' module from pypi.
+# Details are at this link: https://pypi.org/project/colored/#description
+# and thus can be installed via PIP.
+
 
 """This program plays a game of Rock, Paper, Scissors between two Players,
 and reports both Player's scores each round."""
@@ -79,10 +84,10 @@ class ReflectPlayer(Player):
 
 class Game:
     def __init__(self, p1, p2):
-        self.p1 = p1
-        self.p2 = p2
         self.count1 = 0
         self.count2 = 0
+        self.p1 = p1
+        self.p2 = p2
         self.ge_color = bg('gold_3a') + fg('black')
         self.ge_style = attr('reset')
         self.gr_color = bg('black') + fg('gold_3a')
@@ -111,7 +116,8 @@ class Game:
         self.p2.learn(move2, move1)
 
     def play_game(self):
-        print(f"\n\t\t\t  {self.gt_color} ROCK-PAPER-SCISSORS - Game start! {self.gt_style}")
+        print(f"\n\t\t\t\t{self.gt_color}ROCK-PAPER-SCISSORS{self.gt_style}")
+        print(f"\t\t\t\t    {self.gt_color}Game start!{self.gt_style}")
         self.count1 = 0
         self.count2 = 0
         self.round = 0
@@ -126,16 +132,20 @@ class Game:
         print(f"Player 1 = {self.count1}, Player 2 = {self.count2}\n")
         if self.count1 > self.count2:
             print(f"{self.gr_color}The winner of the game was:{self.gr_style}")
-            print(f"{self.gr_color}PLAYER 1 - Congratulations !!{self.gr_style}\n\n")
+            print(f"{self.gr_color}PLAYER 1{self.gr_style}")
+            print(f"{self.gr_color}Congratulations !!{self.gr_style}\n\n")
         elif self.count2 > self.count1:
             print(f"{self.gr_color}The winner of the game was:{self.gr_style}")
-            print(f"{self.gr_color}PLAYER 2 - Congratulations !!{self.gr_style}\n\n")
+            print(f"{self.gr_color}PLAYER 2{self.gr_style}")
+            print(f"{self.gr_color}Congratulations !!{self.gr_style}\n\n")
         else:
             if self.count1 == 0 and self.count2 == 0:
-                print(f"{self.gr_color}The game was void, as nobody won a round :({self.gr_style}")
+                print(f"{self.gr_color}The game was void:{self.gr_style}")
+                print(f"{self.gr_color}Nobody won a round :({self.gr_style}")
                 print(f"{self.gr_color}Please try again!{self.gr_style}\n\n")
             else:
-                print(f"{self.gr_color}The game was tied - Time for a re-match :){self.gr_style}\n\n")
+                print(f"{self.gr_color}The game was tied:{self.gr_style}")
+                print(f"{self.gr_color}Re-match anyone? :){self.gr_style}\n\n")
         print()
         return game.play_game()
 
