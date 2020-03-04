@@ -10,14 +10,16 @@ moves = ['rock', 'paper', 'scissors']
 """The Player class is the parent class for all of the Players
 in this game"""
 
+
 class Player:
     def move(self):
         return 'rock'
 
     def beats(self, one, two):
         return ((one == 'rock' and two == 'scissors') or
-        (one == 'scissors' and two == 'paper') or
-        (one == 'paper' and two == 'rock'))
+                (one == 'scissors' and two == 'paper') or
+                (one == 'paper' and two == 'rock'))
+
 
 class CyclePlayer(Player):
     def __init__(self):
@@ -35,10 +37,13 @@ class CyclePlayer(Player):
         self.my_move = my_move
         self.next_move += 1
 
+
 class HumanPlayer(Player):
     def move(self):
         while True:
-            human_move = input("To play the game, please type either: rock, paper or scissors?\nNote: To end the game and restart at any point, type 'quit'(no quotes) >")
+            print("To play, type either: rock, paper or scissors?")
+            print("Note:")
+            human_move = input("To end the game, type 'quit'(no quotes) >")
             if human_move in moves:
                 return human_move
             if human_move == 'quit':
@@ -47,6 +52,7 @@ class HumanPlayer(Player):
     def learn(self, my_move, their_move):
         pass
 
+
 class RandomPlayer(Player):
     def move(self):
         random_move = random.choice(moves)
@@ -54,6 +60,7 @@ class RandomPlayer(Player):
 
     def learn(self, my_move, their_move):
         pass
+
 
 class ReflectPlayer(Player):
     def __init__(self):
@@ -64,6 +71,7 @@ class ReflectPlayer(Player):
 
     def learn(self, my_move, their_move):
         self.their_move = their_move
+
 
 class Game:
     def __init__(self, p1, p2):
@@ -76,10 +84,10 @@ class Game:
         move1 = self.p1.move()
         move2 = self.p2.move()
         print(f"\nPlayer 1: {move1}  Player 2: {move2}")
-        if self.p1.beats(move1, move2) == True:
+        if self.p1.beats(move1, move2) is True:
             print(f"** PLAYER 1 WINS !! **")
             self.count1 += 1
-        elif self.p2.beats(move2, move1) == True:
+        elif self.p2.beats(move2, move1) is True:
             print(f"** PLAYER 2 WINS !! **")
             self.count2 += 1
         else:
@@ -100,19 +108,24 @@ class Game:
 
     def end_game(self):
         print(f"\nGame over!")
-        print(f"Final Score: Player 1 = {self.count1}, Player 2 = {self.count2}\n")
+        print(f"Final Score:")
+        print(f"Player 1 = {self.count1}, Player 2 = {self.count2}\n")
         if self.count1 > self.count2:
-            print(f"The winner of the game was PLAYER 1 - Congratulations !!\n\n")
+            print(f"The winner of the game was:")
+            print(f"PLAYER 1 - Congratulations !!\n\n")
         elif self.count2 > self.count1:
-            print(f"The winner of the game was PLAYER 2 - Congratulations !!\n\n")
+            print(f"The winner of the game was:")
+            print(f"PLAYER 2 - Congratulations !!\n\n")
         else:
-            if self.count1 ==0 and self.count2 == 0:
-                print(f"The game was void as nobody won a round :( - please try again.\n\n")
+            if self.count1 == 0 and self.count2 == 0:
+                print(f"The game was void, as nobody won a round :(")
+                print(f"Please try again!\n\n")
             else:
                 print(f"The game was tied - Time for a re-match :)\n\n")
         print()
         return game.play_game()
 
+
 if __name__ == '__main__':
-    game = Game(CyclePlayer(), HumanPlayer())
+    game = Game(Player(), HumanPlayer())
     game.play_game()
