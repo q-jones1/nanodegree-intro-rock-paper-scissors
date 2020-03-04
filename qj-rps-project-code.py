@@ -20,17 +20,33 @@ class Player:
         (one == 'paper' and two == 'rock'))
 
 class CyclePlayer(Player):
+    def __init__(self):
+        self.my_move = 'rock'
+        self.next_move = 0
+
     def move(self):
-        for move in range(len(moves)):
-            if move[0] == "rock":
-                return "rock"
+        for index in range(len(moves)):
+            if self.next_move > 2:
+                self.next_move = 0
             else:
-                return move
+                return moves[self.next_move]
+
+    def learn(self, my_move, their_move):
+        self.my_move = my_move
+        self.next_move += 1
 
 class HumanPlayer(Player):
     def move(self):
-        human_move = input("To play the game, please type either: rock, paper or scissors? >")
-        return human_move
+        while True:
+            human_move = input("To play the game, please type either: rock, paper or scissors?\nNote: To end the game and restart at any point, type 'quit'(no quotes) >")
+            if human_move in moves:
+                return human_move
+            if human_move == 'quit':
+                return game.play_game()
+            #if human_move == 'quit':
+            #    return 'quit'
+
+
 
     def learn(self, my_move, their_move):
         pass
@@ -39,6 +55,9 @@ class RandomPlayer(Player):
     def move(self):
         random_move = random.choice(moves)
         return random_move
+
+    def learn(self, my_move, their_move):
+        pass
 
 class ReflectPlayer(Player):
     def __init__(self):
@@ -60,7 +79,7 @@ class Game:
     def play_round(self):
         move1 = self.p1.move()
         move2 = self.p2.move()
-        print(f"Player 1: {move1}  Player 2: {move2}")
+        print(f"\nPlayer 1: {move1}  Player 2: {move2}")
         if self.p1.beats(move1, move2) == True:
             print(f"** PLAYER 1 WINS !! **")
             self.count1 += 1
@@ -74,14 +93,24 @@ class Game:
         self.p2.learn(move2, move1)
 
     def play_game(self):
-        print("Game start!")
-        for round in range(3):
+        print(f"\nGame start!\n")
+        self.count1 = 0
+        self.count2 = 0
+        round = 0
+        while round >= 0:
             round += 1
             print(f"Round {round}:")
             self.play_round()
         print("Game over!")
-
+        print(f"Final Score: Player One {self.count1}, Player Two {self.count2}\n")
+        if self.count1 > self.count2:
+            print("The winner of the game was PLAYER 1 - Congratulations !!")
+        elif self.count2 > self.count1:
+            print("The winner of the game was PLAYER 2 - Congratulations !!")
+        else:
+            print("The game was tied - Time for a re-match :)")
+        print()
 
 if __name__ == '__main__':
-    game = Game(HumanPlayer(), ReflectPlayer())
+    game = Game(CyclePlayer(), HumanPlayer())
     game.play_game()
