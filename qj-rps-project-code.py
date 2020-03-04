@@ -4,6 +4,7 @@
 and reports both Player's scores each round."""
 
 import random
+from colored import fg, bg, attr
 
 moves = ['rock', 'paper', 'scissors']
 
@@ -19,6 +20,9 @@ class Player:
         return ((one == 'rock' and two == 'scissors') or
                 (one == 'scissors' and two == 'paper') or
                 (one == 'paper' and two == 'rock'))
+
+    def learn(self, my_move, their_move):
+        pass
 
 
 class CyclePlayer(Player):
@@ -79,53 +83,63 @@ class Game:
         self.p2 = p2
         self.count1 = 0
         self.count2 = 0
+        self.ge_color = bg('gold_3a') + fg('black')
+        self.ge_style = attr('reset')
+        self.gr_color = bg('black') + fg('gold_3a')
+        self.gr_style = attr('reset')
+        self.gt_color = bg('navy_blue') + fg('white')
+        self.gt_style = attr('reset')
+        self.rn_color = bg('navy_blue') + fg('white')
+        self.rn_style = attr('reset')
+        self.rr_color = bg('black') + fg('gold_3a')
+        self.rr_style = attr('reset')
 
     def play_round(self):
         move1 = self.p1.move()
         move2 = self.p2.move()
         print(f"\nPlayer 1: {move1}  Player 2: {move2}")
         if self.p1.beats(move1, move2) is True:
-            print(f"** PLAYER 1 WINS !! **")
+            print(f"{self.rr_color}** PLAYER 1 WINS !! **{self.rr_style}")
             self.count1 += 1
         elif self.p2.beats(move2, move1) is True:
-            print(f"** PLAYER 2 WINS !! **")
+            print(f"{self.rr_color}** PLAYER 2 WINS !! **{self.rr_style}")
             self.count2 += 1
         else:
-            print(f"** IT'S A TIE !! **")
+            print(f"{self.rr_color}** IT'S A TIE !! **{self.rr_style}")
         print(f"Score: Player 1 = {self.count1}, Player 2 = {self.count2}\n")
         self.p1.learn(move1, move2)
         self.p2.learn(move2, move1)
 
     def play_game(self):
-        print(f"\nROCK-PAPER-SCISSORS - Game start!\n")
+        print(f"\n\t\t\t  {self.gt_color} ROCK-PAPER-SCISSORS - Game start! {self.gt_style}")
         self.count1 = 0
         self.count2 = 0
-        round = 0
-        while round >= 0:
-            round += 1
-            print(f"Round {round}:")
+        self.round = 0
+        while self.round >= 0:
+            self.round += 1
+            print(f"{self.rn_color} Round {self.round} {self.rn_style}:")
             self.play_round()
 
     def end_game(self):
-        print(f"\nGame over!")
+        print(f"\n\t\t\t\t    {self.ge_color} Game over! {self.ge_style}")
         print(f"Final Score:")
         print(f"Player 1 = {self.count1}, Player 2 = {self.count2}\n")
         if self.count1 > self.count2:
-            print(f"The winner of the game was:")
-            print(f"PLAYER 1 - Congratulations !!\n\n")
+            print(f"{self.gr_color}The winner of the game was:{self.gr_style}")
+            print(f"{self.gr_color}PLAYER 1 - Congratulations !!{self.gr_style}\n\n")
         elif self.count2 > self.count1:
-            print(f"The winner of the game was:")
-            print(f"PLAYER 2 - Congratulations !!\n\n")
+            print(f"{self.gr_color}The winner of the game was:{self.gr_style}")
+            print(f"{self.gr_color}PLAYER 2 - Congratulations !!{self.gr_style}\n\n")
         else:
             if self.count1 == 0 and self.count2 == 0:
-                print(f"The game was void, as nobody won a round :(")
-                print(f"Please try again!\n\n")
+                print(f"{self.gr_color}The game was void, as nobody won a round :({self.gr_style}")
+                print(f"{self.gr_color}Please try again!{self.gr_style}\n\n")
             else:
-                print(f"The game was tied - Time for a re-match :)\n\n")
+                print(f"{self.gr_color}The game was tied - Time for a re-match :){self.gr_style}\n\n")
         print()
         return game.play_game()
 
 
 if __name__ == '__main__':
-    game = Game(Player(), HumanPlayer())
+    game = Game(HumanPlayer(), CyclePlayer())
     game.play_game()
