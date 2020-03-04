@@ -14,25 +14,41 @@ class Player:
     def move(self):
         return 'void'
 
-    def learn(self, my_move, their_move):
-        pass
-
     def beats(self, one, two):
         return ((one == 'rock' and two == 'scissors') or
         (one == 'scissors' and two == 'paper') or
         (one == 'paper' and two == 'rock'))
 
-class RandomPlayer(Player):
+class CyclePlayer(Player):
     def move(self):
-        random_move = random.choice(moves)
-        return random_move
+        for move in range(len(moves)):
+            if move[0] == "rock":
+                return "rock"
+            else:
+                return move
 
 class HumanPlayer(Player):
     def move(self):
         human_move = input("To play the game, please type either: rock, paper or scissors? >")
         return human_move
 
+    def learn(self, my_move, their_move):
+        pass
 
+class RandomPlayer(Player):
+    def move(self):
+        random_move = random.choice(moves)
+        return random_move
+
+class ReflectPlayer(Player):
+    def __init__(self):
+        self.their_move = 'rock'
+
+    def move(self):
+        return self.their_move
+
+    def learn(self, my_move, their_move):
+        self.their_move = their_move
 
 class Game:
     def __init__(self, p1, p2):
@@ -67,5 +83,5 @@ class Game:
 
 
 if __name__ == '__main__':
-    game = Game(HumanPlayer(), RandomPlayer())
+    game = Game(HumanPlayer(), ReflectPlayer())
     game.play_game()
