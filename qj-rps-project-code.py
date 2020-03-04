@@ -17,14 +17,17 @@ class Player:
     def learn(self, my_move, their_move):
         pass
 
+    def beats(self, one, two):
+        return ((one == 'rock' and two == 'scissors') or
+        (one == 'scissors' and two == 'paper') or
+        (one == 'paper' and two == 'rock'))
+
 class RandomPlayer(Player):
     def move(self):
-        return random.choice(moves)
+        chosen_move = random.choice(moves)
+        return chosen_move
 
-def beats(one, two):
-    return ((one == 'rock' and two == 'scissors') or
-            (one == 'scissors' and two == 'paper') or
-            (one == 'paper' and two == 'rock'))
+
 
 
 class Game:
@@ -36,6 +39,12 @@ class Game:
         move1 = self.p1.move()
         move2 = self.p2.move()
         print(f"Player 1: {move1}  Player 2: {move2}")
+        if self.p1.beats(move1, move2) == True:
+            print(f"** PLAYER 1 WINS !! **")
+        elif self.p2.beats(move2, move1) == True:
+            print(f"** PLAYER 2 WINS !! **")
+        else:
+            print(f"** IT'S A TIE !! **")
         self.p1.learn(move1, move2)
         self.p2.learn(move2, move1)
 
